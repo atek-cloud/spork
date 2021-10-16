@@ -1,0 +1,19 @@
+{
+  "name": "spork",
+  "version": "0.0.1",
+  "description": "A command-line p2p sockets multi-tool",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "ava test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atek-cloud/spork.git"
+  },
+  "author": "Paul Frazee <pfrazee@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/atek-cloud/spork/issues"
+  },
+  "homepage": "https://github.com/atek-cloud/spork#readme"
+}
