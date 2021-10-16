@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "description": "A command-line p2p sockets multi-tool",
   "main": "dist/index.js",
+  "bin": "dist/bin.js",
+  "type": "module",
   "scripts": {
-    "test": "ava test"
+    "build": "tsc --project tsconfig.json",
+    "test": "ava -s test/*.ts"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,35 @@
   "bugs": {
     "url": "https://github.com/atek-cloud/spork/issues"
   },
-  "homepage": "https://github.com/atek-cloud/spork#readme"
+  "homepage": "https://github.com/atek-cloud/spork#readme",
+  "devDependencies": {
+    "@types/node": "^16.6.2",
+    "@types/pump": "^1.1.1",
+    "ava": "^3.15.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5"
+  },
+  "ava": {
+    "extensions": {
+      "ts": "module"
+    },
+    "nonSemVerExperiments": {
+      "configurableModuleFormat": true
+    },
+    "nodeArguments": [
+      "--loader=ts-node/esm"
+    ]
+  },
+  "dependencies": {
+    "@atek-cloud/network": "^0.0.3",
+    "ansi-escapes": "^5.0.0",
+    "chalk": "^4.1.2",
+    "cli-spinners": "^2.6.1",
+    "figures": "^3.2.0",
+    "is-interactive": "^1.0.0",
+    "pump": "^3.0.0",
+    "random-port": "^0.1.0",
+    "subcommand": "^2.1.1",
+    "term-size": "^3.0.1"
+  }
 }
