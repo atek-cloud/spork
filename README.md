@@ -2,7 +2,7 @@
 
 # Atek Spork
 
-A command-line p2p sockets tool. WARNING: early alpha, spork power levels elevated.
+A command-line p2p sockets tool. **WARNING: early alpha; spork power levels are elevated. 👉[Demo video](https://www.youtube.com/watch?v=kPP7gC_77Rc)👈.** 
 
 ```
 npm i -g @atek-cloud/spork
