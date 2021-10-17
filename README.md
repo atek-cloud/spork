@@ -82,6 +82,32 @@ $ curl localhost:5555
 Hello, world!
 ```
 
+### Create an HTTP gateway
+
+You can run an HTTP gateway to p2p sockets with the `spork gateway` command.
+
+```bash
+$ spork gateway -p 5555
+Created temporary keypair, public key: ukblfcctbbfif2vijw3s77w6hk5maaemc4x5hou2a7txgfp5u4pq
+
+======================
+Spork powers ACTIVATED
+
+ - Mode: Gateway
+ - Listening on localhost:5555
+ - Proxing by subdomain to p2p sockets
+======================
+```
+
+Now we can access the `whattzzuu5drxwdwi6xbijjf7yt56l5adzht7j7kjvfped7amova` pubkey through our gateway by visiting `http://whattzzuu5drxwdwi6xbijjf7yt56l5adzht7j7kjvfped7amova.localhost:5555`.
+
+You can curl to that address by setting the host header manually:
+
+```bash
+$ curl localhost:5555 -H "Host: whattzzuu5drxwdwi6xbijjf7yt56l5adzht7j7kjvfped7amova.localhost"
+Hello, world!
+```
+
 ## What next?
 
 You now have the power of the spork. Use it with wisdom...or don't. The spork powers will only grow from here (aka we'll add more features).

@@ -1,14 +1,11 @@
 import net from 'net'
-import { resolve } from 'path'
-import { promises as fsp } from 'fs'
 import * as AtekNet from '@atek-cloud/network'
-import { fromBase32, toBase32 } from '@atek-cloud/network/dist/util.js'
+import { fromBase32 } from '@atek-cloud/network/dist/util.js'
 import pump from 'pump'
-// @ts-ignore no d.ts, screw it
-import randomPort from 'random-port'
 import { usage } from '../lib/cli.js'
+import { isBuffer, randomPortPromise, readKeyFile } from '../lib/util.js'
 
-const PROTOCOL = '/pipe/1.0.0'
+const PROTOCOLS = ['/pipe/1.0.0', '/http/1.1']
 
 export default [
   {
@@ -39,7 +36,6 @@ Options:`,
       const host = args.host || 'localhost'
       const port = args.port ? Number(args.port) : await randomPortPromise()
       const remotePublicKeyB32 = args._[0]
-      let keyPair = undefined
 
       let remotePublicKey: Buffer|undefined
       if (remotePublicKeyB32) {
@@ -54,45 +50,7 @@ Options:`,
         }
       }
 
-      if (args.keyfile) {
-        const keyfilePath = resolve(args.keyfile)
-        console.log('Reading keyfile at', keyfilePath)
-        try {
-          const str = await fsp.readFile(keyfilePath, 'utf8')
-          try {
-            const obj = JSON.parse(str)
-            try {
-              keyPair = {
-                publicKey: fromBase32(obj.publicKey),
-                secretKey: fromBase32(obj.secretKey)
-              }
-            } catch (e) {
-              console.error('Failed to parse keyfile, aborting')
-              console.error(e)
-              process.exit(1)
-            }
-          } catch (e) {
-            console.error('Failed to parse keyfile, aborting')
-            console.error(e)
-            process.exit(1)
-          }
-        } catch (e) {
-          console.log('...File not found, creating a new keypair at that location.')
-        }
-        if (keyPair) {
-          console.log('...Loaded keypair, public key:', toBase32(keyPair.publicKey))
-        } else {
-          keyPair = AtekNet.createKeypair()
-          await fsp.writeFile(keyfilePath, JSON.stringify({
-            publicKey: toBase32(keyPair.publicKey),
-            secretKey: toBase32(keyPair.secretKey),
-          }, null, 2), 'utf8')
-          console.log('...Created keypair, public key:', toBase32(keyPair.publicKey))
-        }
-      } else {
-        keyPair = AtekNet.createKeypair()
-        console.log('Created temporary keypair, public key:', toBase32(keyPair.publicKey))
-      }
+      const keyPair = await readKeyFile(args.keyfile)
 
       await AtekNet.setup()
 
@@ -117,7 +75,7 @@ Options:`,
           }
           if (!conn) return
           try {
-            const {stream} = await conn.select([PROTOCOL])
+            const {stream} = await conn.select(PROTOCOLS)
             pump(socket, stream, socket)
           } catch (e) {
             console.error('Failed to negotiate a protocol with the peer')
@@ -142,10 +100,12 @@ Options:`,
             console.log('CLOSE pubkey:', sock.remotePublicKeyB32)
           })
         })
-        node.setProtocolHandler(PROTOCOL, (stream) => {
-          const conn = net.connect({host, port})
-          pump(stream, conn, stream)
-        })
+        for (const proto of PROTOCOLS) {
+          node.setProtocolHandler(proto, (stream) => {
+            const conn = net.connect({host, port})
+            pump(stream, conn, stream)
+          })
+        }
         console.log('')
         console.log('======================')
         console.log('Spork powers ACTIVATED')
@@ -158,13 +118,3 @@ Options:`,
     }
   }
 ]
-
-function isBuffer (v: any): v is Buffer {
-  return Buffer.isBuffer(v)
-}
-
-function randomPortPromise (): Promise<number> {
-  return new Promise(resolve => {
-    randomPort(resolve)
-  })
-}

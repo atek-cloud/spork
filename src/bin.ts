@@ -4,8 +4,8 @@ import subcommand from 'subcommand'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
 import * as fs from 'fs'
-import { usage } from './lib/cli.js'
 import bind from './commands/bind.js'
+import gateway from './commands/gateway.js'
 
 const PACKAGE_JSON_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'package.json')
 
@@ -27,7 +27,8 @@ const cmdOpts = {
     }
   },
   commands: [
-    ...bind
+    ...bind,
+    ...gateway
   ],
   root: {
     name: '',
