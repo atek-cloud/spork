@@ -18,6 +18,7 @@ spork - A p2p sockets multi-tool
 
 Commands:
    spork bind [public-key] - Bind a p2p socket as a proxy to a local or remote server.
+   spork gateway - Create an HTTP server that routes to p2p sockets by subdomain.
 ```
 
 ## How-tos
