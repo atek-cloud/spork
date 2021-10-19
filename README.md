@@ -113,6 +113,16 @@ Hello, world!
 
 You now have the power of the spork. Use it with wisdom...or don't. The spork powers will only grow from here (aka we'll add more features).
 
+## Notable changes
+
+### 1.0.0 - Drop libp2p modules
+
+⚠️ Breaking change ⚠️ 
+
+The [Atek Networking module](https://github.com/atek-cloud/network) was updated to drop the libp2p modules. [See the section in that readme](https://github.com/atek-cloud/network#004---drop-libp2p-modules) to understand why.
+
+This is a breaking change to the wire protocol from previous versions! Make sure you're using 1.0.0+ on both ends.
+
 ## License
 
 MIT

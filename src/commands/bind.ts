@@ -5,8 +5,6 @@ import pump from 'pump'
 import { usage } from '../lib/cli.js'
 import { isBuffer, randomPortPromise, readKeyFile } from '../lib/util.js'
 
-const PROTOCOLS = ['/pipe/1.0.0', '/http/1.1']
-
 export default [
   {
     name: 'bind',
@@ -56,16 +54,11 @@ Options:`,
 
       const node = new AtekNet.Node(keyPair)
       if (isBuffer(remotePublicKey)) {
-        let conn: AtekNet.AtekSocket|undefined = undefined
         net.createServer(async (socket) => {
-          if (isBuffer(remotePublicKey) && !conn) {
+          let conn: AtekNet.AtekSocket|undefined = undefined
+          if (isBuffer(remotePublicKey)) {
             try {
               conn = await node.connect(remotePublicKey)
-              if (conn) {
-                conn.once('close', () => {
-                  conn = undefined
-                })
-              }
             } catch (e) {
               console.error('Failed to establish a connection over the p2p network')
               console.error(e)
@@ -74,15 +67,7 @@ Options:`,
             }
           }
           if (!conn) return
-          try {
-            const {stream} = await conn.select(PROTOCOLS)
-            pump(socket, stream, socket)
-          } catch (e) {
-            console.error('Failed to negotiate a protocol with the peer')
-            console.error(e)
-            socket.destroy()
-            return
-          }
+          pump(socket, conn.stream, socket)
         }).listen(port)
         console.log('')
         console.log('======================')
@@ -100,12 +85,10 @@ Options:`,
             console.log('CLOSE pubkey:', sock.remotePublicKeyB32)
           })
         })
-        for (const proto of PROTOCOLS) {
-          node.setProtocolHandler(proto, (stream) => {
-            const conn = net.connect({host, port})
-            pump(stream, conn, stream)
-          })
-        }
+        node.setProtocolHandler((stream) => {
+          const conn = net.connect({host, port})
+          pump(stream, conn, stream)
+        })
         console.log('')
         console.log('======================')
         console.log('Spork powers ACTIVATED')
