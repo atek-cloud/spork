@@ -2,6 +2,7 @@ import net from 'net'
 import * as AtekNet from '@atek-cloud/network'
 import { fromBase32 } from '@atek-cloud/network/dist/util.js'
 import pump from 'pump'
+import ansi from 'ansi-escapes'
 import { usage } from '../lib/cli.js'
 import { isBuffer, randomPortPromise, readKeyFile } from '../lib/util.js'
 
@@ -73,7 +74,7 @@ Options:`,
         console.log('======================')
         console.log('Spork powers ACTIVATED')
         console.log('')
-        console.log(' - Mode: forward proxy')
+        console.log(' - Mode: Forward proxy')
         console.log(` - Listening on localhost:${port}`)
         console.log(' - Proxying all traffic to', remotePublicKeyB32)
         console.log('======================')
@@ -89,6 +90,7 @@ Options:`,
           const conn = net.connect({host, port})
           pump(stream, conn, stream)
         })
+        const link = `https://${node.publicKeyB32}.atek.app/`
         console.log('')
         console.log('======================')
         console.log('Spork powers ACTIVATED')
@@ -97,6 +99,12 @@ Options:`,
         console.log(' - Listening on', node.publicKeyB32)
         console.log(` - Proxying all traffic to ${host}:${port}`)
         console.log('======================')
+        console.log('')
+        console.log('If you\'re running an HTTP server, you can share the following link:')
+        console.log('')
+        console.log(`  ${ansi.link(link, link)}`)
+        console.log('')
+        console.log('This public gateway will tunnel directly to your spork!')
       }
     }
   }
