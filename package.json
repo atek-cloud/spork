@@ -1,6 +1,6 @@
 {
   "name": "@atek-cloud/spork",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A command-line p2p sockets multi-tool",
   "main": "dist/index.js",
   "bin": "dist/bin.js",
