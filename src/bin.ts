@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 import * as fs from 'fs'
 import bind from './commands/bind.js'
 import gateway from './commands/gateway.js'
+import serve from './commands/serve.js'
 
 const PACKAGE_JSON_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'package.json')
 
@@ -28,7 +29,8 @@ const cmdOpts = {
   },
   commands: [
     ...bind,
-    ...gateway
+    ...gateway,
+    ...serve
   ],
   root: {
     name: '',

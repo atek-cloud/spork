@@ -20,7 +20,7 @@ Examples:
 Options:`,
     usage,
     options: [
-      {name: 'port', abbr: 'p', help: 'The port to listen on (forward proxy) or to send traffic to (reverse proxy). Defaults to a random port.'},
+      {name: 'port', abbr: 'p', help: 'The port to listen on. Defaults to a random port.'},
       {name: 'keyfile', abbr: 'k', help: 'The keypair file to identify this node. If the file doesn\'t exist, will write the generated keypair to that file. If not specified, will default to a temporary keypair.'}
     ],
     command: async (args: any) => {
