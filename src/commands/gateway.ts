@@ -48,6 +48,7 @@ Options:`,
           host: `${remotePublicKeyB32}.atek.app`
         })
         const proxyReq = http.request(`http://${remotePublicKeyB32}.atek.app${req.url}`, {
+          method: req.method,
           agent,
           headers,
         }, (proxyRes: http.IncomingMessage) => {
