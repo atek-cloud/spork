@@ -55,3 +55,7 @@ const cmdOpts = {
 }
 const match = subcommand(cmdOpts)
 const matchedCmd = match(process.argv.slice(2))
+if (!matchedCmd) {
+  console.error('Command not found:', process.argv[2])
+  process.exit(1)
+}
