@@ -7,6 +7,7 @@ import * as fs from 'fs'
 import bind from './commands/bind.js'
 import gateway from './commands/gateway.js'
 import serve from './commands/serve.js'
+import beam from './commands/beam.js'
 
 const PACKAGE_JSON_PATH = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'package.json')
 
@@ -30,7 +31,8 @@ const cmdOpts = {
   commands: [
     ...bind,
     ...gateway,
-    ...serve
+    ...serve,
+    ...beam
   ],
   root: {
     name: '',

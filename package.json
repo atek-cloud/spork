@@ -39,11 +39,12 @@
     ]
   },
   "dependencies": {
-    "@atek-cloud/network": "^0.0.4",
+    "@atek-cloud/network": "^0.0.5",
     "ansi-escapes": "^5.0.0",
     "chalk": "^4.1.2",
     "cli-spinners": "^2.6.1",
     "figures": "^3.2.0",
+    "hyperbeam": "^2.0.1",
     "is-interactive": "^1.0.0",
     "pump": "^3.0.0",
     "random-port": "^0.1.0",
