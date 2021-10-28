@@ -25,7 +25,7 @@ Options:`,
       {name: 'reuse', abbr: 'r', help: 'Reuse a past passphrase.'}
     ],
     command: (args: any) => {
-      const beam = new Hyperbeam(args._[0])
+      const beam = new Hyperbeam(args._[0], args.reuse)
       if (beam.announce) {
         console.error(figures.play, 'Run the following command to connect:')
         console.error(figures.play)

@@ -4,6 +4,6 @@ declare module 'hyperbeam' {
     announce: boolean
     connected: boolean
     key: string
-    constructor (key?: string)
+    constructor (key?: string, reuse?: boolean)
   }
 }
